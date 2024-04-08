@@ -238,32 +238,32 @@ export class News extends Component {
       "publishedAt": "2024-04-05T12:00:00Z",
       "content": "The biggest earthquake to hit Taiwan in at least 25 years will likely cause a temporary disruption of the supply chain for semiconductors\r\n and related tech products as manufacturers restore normal o… [+5091 chars]"
     },
-    // {
-    //   "source": {
-    //     "id": "associated-press",
-    //     "name": "Associated Press"
-    //   },
-    //   "author": "DAVE COLLINS",
-    //   "title": "Cleanup begins as spring nor'easter moves on. But hundreds of thousands still lack power - The Associated Press",
-    //   "description": "Snow showers are lingering as the cleanup begins following a major spring storm that brought heavy snow, rain and high winds to the Northeast. Hundreds of thousands of homes and businesses are still without power in Maine and New Hampshire. Well over a foot o…",
-    //   "url": "https://apnews.com/article/snow-new-england-winter-storm-c7de82552c5f131eb315be704013b87d",
-    //   "urlToImage": "https://dims.apnews.com/dims4/default/b7fbd2b/2147483647/strip/true/crop/4032x2268+0+210/resize/1440x810!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Faa%2Fc1%2F6fa0854801c2edfcc259f4fae40f%2Fb347c3feafc44d78a269bddc3143a9f1",
-    //   "publishedAt": "2024-04-05T11:50:00Z",
-    //   "content": "Snow showers lingered Friday as the cleanup began following a major spring storm that brought heavy snow, rain and high winds to the Northeast, left hundreds of thousands of homes and businesses with… [+3769 chars]"
-    // },
-    // {
-    //   "source": {
-    //     "id": null,
-    //     "name": "Fox Business"
-    //   },
-    //   "author": "Aislinn Murphy",
-    //   "title": "Solar eclipse: the prime watching spots are along the 'path of totality' - Fox Business",
-    //   "description": "There is a solar eclipse happening on Monday, and many people have hopes of witnessing the rare phenomenon for themselves. The path of totality will offer prime spots for seeing the total eclipse.",
-    //   "url": "https://www.foxbusiness.com/lifestyle/solar-eclipse-prime-watching-spots-along-path-of-totality",
-    //   "urlToImage": "https://a57.foxnews.com/static.foxbusiness.com/foxbusiness.com/content/uploads/2024/04/0/0/eclipse-viewers.jpg?ve=1&tl=1",
-    //   "publishedAt": "2024-04-05T11:00:00Z",
-    //   "content": "There is a solar eclipse happening on Monday, and many people have hopes of witnessing the rare phenomenon for themselves. \r\nThe total solar eclipse, when the moon entirely hides the sun, will only b… [+4159 chars]"
-    // }
+    {
+      "source": {
+        "id": "associated-press",
+        "name": "Associated Press"
+      },
+      "author": "DAVE COLLINS",
+      "title": "Cleanup begins as spring nor'easter moves on. But hundreds of thousands still lack power - The Associated Press",
+      "description": "Snow showers are lingering as the cleanup begins following a major spring storm that brought heavy snow, rain and high winds to the Northeast. Hundreds of thousands of homes and businesses are still without power in Maine and New Hampshire. Well over a foot o…",
+      "url": "https://apnews.com/article/snow-new-england-winter-storm-c7de82552c5f131eb315be704013b87d",
+      "urlToImage": "https://dims.apnews.com/dims4/default/b7fbd2b/2147483647/strip/true/crop/4032x2268+0+210/resize/1440x810!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Faa%2Fc1%2F6fa0854801c2edfcc259f4fae40f%2Fb347c3feafc44d78a269bddc3143a9f1",
+      "publishedAt": "2024-04-05T11:50:00Z",
+      "content": "Snow showers lingered Friday as the cleanup began following a major spring storm that brought heavy snow, rain and high winds to the Northeast, left hundreds of thousands of homes and businesses with… [+3769 chars]"
+    },
+    {
+      "source": {
+        "id": null,
+        "name": "Fox Business"
+      },
+      "author": "Aislinn Murphy",
+      "title": "Solar eclipse: the prime watching spots are along the 'path of totality' - Fox Business",
+      "description": "There is a solar eclipse happening on Monday, and many people have hopes of witnessing the rare phenomenon for themselves. The path of totality will offer prime spots for seeing the total eclipse.",
+      "url": "https://www.foxbusiness.com/lifestyle/solar-eclipse-prime-watching-spots-along-path-of-totality",
+      "urlToImage": "https://a57.foxnews.com/static.foxbusiness.com/foxbusiness.com/content/uploads/2024/04/0/0/eclipse-viewers.jpg?ve=1&tl=1",
+      "publishedAt": "2024-04-05T11:00:00Z",
+      "content": "There is a solar eclipse happening on Monday, and many people have hopes of witnessing the rare phenomenon for themselves. \r\nThe total solar eclipse, when the moon entirely hides the sun, will only b… [+4159 chars]"
+    }
   ]
   constructor() {
     super()
@@ -272,15 +272,24 @@ export class News extends Component {
         articles : this.articles
     }
 }
+
+async componentDidMount(){
+  let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2";
+  let data = await fetch(url);
+  let parseData= await data.json()
+  console.log(parseData);
+  this.setState({articles: parseData.articles})
+
+}
   render() {
     return (
       <div className="container my-3">
-        <h2>NewsMonkey  - Top Headlines</h2>
+        <h1>NewsMonkey  - Top Headlines</h1>
         {this.state.articles.map((element)=>{console.log(element)})}
         <div className="row">
         {this.state.articles.map((element)=>{
             return <div className="col md-4" key={element.url}>
-              <NewsItem  title={element.title.slice(0,40)} description={element.description.slice(0,88)} imageUrl= {element.urlToImage} newsUrl = {element.url}/>
+              <NewsItem  title={element.title?element.title.slice(0,40): " "} description={element.description?element.description.slice(0,88):""} imageUrl= {element.urlToImage} newsUrl = {element.url}/>
           </div>
           })}
         
