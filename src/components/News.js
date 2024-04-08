@@ -265,20 +265,58 @@ export class News extends Component {
       "content": "There is a solar eclipse happening on Monday, and many people have hopes of witnessing the rare phenomenon for themselves. \r\nThe total solar eclipse, when the moon entirely hides the sun, will only b… [+4159 chars]"
     }
   ]
+  handlePreviousClick = async ()=>{
+    console.log("previous")
+    console.log("next")
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page-1}&pageSize=20`;
+    let data = await fetch(url);
+    let parseData= await data.json()
+    console.log(parseData);
+    this.setState({
+      page: this.state.page-1,
+      articles: parseData.articles
+    })
+ 
+    
+  }
+
+
+  handleNextClick = async ()=>{
+    console.log("next");
+    if(this.state.page +1 > Math.ceil (this.state.totalResults/20)){
+
+    }
+    else{
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page+1}&pageSize=20`;
+    let data = await fetch(url);
+    let parseData= await data.json()
+    console.log(parseData);
+    this.setState({
+      page: this.state.page+1,
+      articles: parseData.articles
+    })}
+ 
+
+  }
+
+
+
   constructor() {
     super()
     console.log("Hello I am a constructor from News component");
     this.state ={
-        articles : this.articles
+        articles : this.articles,
+        loading:false,
+        page:1
     }
 }
 
 async componentDidMount(){
-  let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2";
+  let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=1&pageSize=20";
   let data = await fetch(url);
   let parseData= await data.json()
   console.log(parseData);
-  this.setState({articles: parseData.articles})
+  this.setState({articles: parseData.articles, totalResults: parseData.totalResults})
 
 }
   render() {
@@ -292,9 +330,10 @@ async componentDidMount(){
               <NewsItem  title={element.title?element.title.slice(0,40): " "} description={element.description?element.description.slice(0,88):""} imageUrl= {element.urlToImage} newsUrl = {element.url}/>
           </div>
           })}
-        
         </div>
-        
+        <div className="container d-flex justify-content-between">
+        <button disabled={this.state.page<=1} type="button" className="btn btn-dark" onClick={this.handlePreviousClick}> &larr; Previous</button>
+        <button type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button></div>
       </div>
     )
   }
