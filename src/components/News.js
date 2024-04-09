@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Spinner from './Spinner'
 
 
 export class News extends Component {
@@ -268,7 +269,7 @@ export class News extends Component {
   handlePreviousClick = async ()=>{
     console.log("previous")
     console.log("next")
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page-1}&pageSize=20`;
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page-1}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parseData= await data.json()
     console.log(parseData);
@@ -283,11 +284,11 @@ export class News extends Component {
 
   handleNextClick = async ()=>{
     console.log("next");
-    if(this.state.page +1 > Math.ceil (this.state.totalResults/20)){
+    if(this.state.page +1 > Math.ceil (this.state.totalResults/this.props.pageSize)){
 
     }
     else{
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page+1}&pageSize=20`;
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page+1}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parseData= await data.json()
     console.log(parseData);
@@ -312,7 +313,7 @@ export class News extends Component {
 }
 
 async componentDidMount(){
-  let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=1&pageSize=20";
+  let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=1&pageSize=${this.props.pageSize}`;
   let data = await fetch(url);
   let parseData= await data.json()
   console.log(parseData);
@@ -322,7 +323,8 @@ async componentDidMount(){
   render() {
     return (
       <div className="container my-3">
-        <h1>NewsMonkey  - Top Headlines</h1>
+        <h1 className="text-center">Daily News  - Top Headlines</h1>
+        <Spinner></Spinner>
         {this.state.articles.map((element)=>{console.log(element)})}
         <div className="row">
         {this.state.articles.map((element)=>{
@@ -333,7 +335,7 @@ async componentDidMount(){
         </div>
         <div className="container d-flex justify-content-between">
         <button disabled={this.state.page<=1} type="button" className="btn btn-dark" onClick={this.handlePreviousClick}> &larr; Previous</button>
-        <button type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button></div>
+        <button disabled={(this.state.page +1 > Math.ceil (this.state.totalResults/this.props.pageSize))} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button></div>
       </div>
     )
   }
