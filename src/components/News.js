@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component,useEffect, useState } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner'
 
 
 export class News extends Component {
+
+  // const[loading,setLoading] = useState(true)
   articles = [
     {
       "source": {
@@ -270,12 +272,14 @@ export class News extends Component {
     console.log("previous")
     console.log("next")
     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page-1}&pageSize=${this.props.pageSize}`;
+    {this.setState({loading:true})}
     let data = await fetch(url);
     let parseData= await data.json()
     console.log(parseData);
     this.setState({
       page: this.state.page-1,
-      articles: parseData.articles
+      articles: parseData.articles,
+      loading : false
     })
  
     
@@ -284,23 +288,17 @@ export class News extends Component {
 
   handleNextClick = async ()=>{
     console.log("next");
-    if(this.state.page +1 > Math.ceil (this.state.totalResults/this.props.pageSize)){
-
-    }
-    else{
+    if(!(this.state.page +1 > Math.ceil (this.state.totalResults/this.props.pageSize))){
     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=${this.state.page+1}&pageSize=${this.props.pageSize}`;
+    {this.setState({loading:true})}
     let data = await fetch(url);
     let parseData= await data.json()
-    console.log(parseData);
     this.setState({
       page: this.state.page+1,
-      articles: parseData.articles
+      articles: parseData.articles,
+      loading: false
     })}
- 
-
   }
-
-
 
   constructor() {
     super()
@@ -314,20 +312,24 @@ export class News extends Component {
 
 async componentDidMount(){
   let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=176855dda6fe4a51a03caf5b644d2db2&page=1&pageSize=${this.props.pageSize}`;
+  {this.setState({loading:true})}
   let data = await fetch(url);
   let parseData= await data.json()
   console.log(parseData);
-  this.setState({articles: parseData.articles, totalResults: parseData.totalResults})
+  this.setState({articles: parseData.articles,
+    totalResults: parseData.totalResults,
+    loading:false})
+
 
 }
   render() {
     return (
       <div className="container my-3">
         <h1 className="text-center">Daily News  - Top Headlines</h1>
-        <Spinner></Spinner>
+        {this.state.loading && <Spinner/>}
         {this.state.articles.map((element)=>{console.log(element)})}
         <div className="row">
-        {this.state.articles.map((element)=>{
+        {!this.state.loading && this.state.articles.map((element)=>{
             return <div className="col md-4" key={element.url}>
               <NewsItem  title={element.title?element.title.slice(0,40): " "} description={element.description?element.description.slice(0,88):""} imageUrl= {element.urlToImage} newsUrl = {element.url}/>
           </div>
