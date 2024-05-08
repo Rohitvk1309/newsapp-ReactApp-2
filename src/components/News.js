@@ -690,7 +690,6 @@ export class News extends Component {
   }
 
 
-
   constructor() {
     super()
     console.log("Hello I am a constructor from News component");
