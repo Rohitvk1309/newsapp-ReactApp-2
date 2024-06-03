@@ -16,18 +16,18 @@ export class NavBar extends Component {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <a className="nav-link active" aria-current="page" to="/Home">Home</a>
+          {/* <a className="nav-link active" aria-current="page" to="/Home">Home</a> */}
         </li>
         <li className="nav-item">
-          <Link className="nav-link"to="/about">About</Link>
+          {/* <Link className="nav-link"to="/about">About</Link> */}
         </li>
-        <li className='nav-item'><Link className="nav-link" to="/business">business</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/Entertainment">Entertainment</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/General">General</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/health">health</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/Science">Science</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/Sports">Sports</Link> </li>
-       <li className='nav-item'><Link className="nav-link" to="/Technology">Technology</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/business">Business</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/Entertainment">Entertainment</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/General">General</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/health">health</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/Science">Science</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/Sports">Sports</Link> </li>
+        <li className='nav-item'><Link className="nav-link" to="/Technology">Technology</Link> </li>
 
       </ul>
      
